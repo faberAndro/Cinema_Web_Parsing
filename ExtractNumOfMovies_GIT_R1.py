@@ -1,3 +1,7 @@
+# TODO: RISCRIVERE TUTTO UTILIZZANDO "ITER"
+# TODO: RISOLVERE IL PROBLEMA DEI REGISTI NULLI OPPURE MAGGIORI DI UNO
+# TODO: PROCEDURA PER LA RICERCA DI TUTTI I FILM ITALIANI IN UN ANNO SPECIFICO (1960 IN QUESTO ESEMPIO)
+# TODO: MODIFICARE LA RICERCA SEQUENZIALMENTE. IL REGISTA POTREBBE NON ESSERCI
 from lxml import etree
 from io import StringIO, BytesIO
 import csv
@@ -48,7 +52,7 @@ def extract_page(current_page_number):
 
 
 def analyse_page(n_page):
-    print(n_page,'- ', end='')
+    print(n_page, '- ', end='')
     text_of_current_page = extract_page(n_page)
     list_of_dictionaries = []
     parser = etree.HTMLParser()
@@ -73,10 +77,11 @@ def analyse_page(n_page):
 
 
 def write_year_on_csv(lista_di_films):
-    with open('films.csv', 'a', newline='') as csvfile:
+    with open('films.csv', 'a', newline='', encoding='utf-8') as csvfile:
         fieldnames = ['title', 'genre', 'year', 'directors', 'actors']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
+        if year == y_1:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         for film in lista_di_films:
             writer.writerow(film)
