@@ -29,6 +29,7 @@ def page_address_parameters():
         
 
 def analyse_year():
+    print('Dowloading year %d : ... page: .. ' % year, end='')
     list_over_this_year = []
     page_number = 1
     while True:
@@ -37,6 +38,7 @@ def analyse_year():
         if dictionary_of_films_in_this_page:
             list_over_this_year.extend(dictionary_of_films_in_this_page)
         else:
+            print('.. done')
             return list_over_this_year
 
 
@@ -50,7 +52,7 @@ def extract_page(current_page_number):
 
 
 def analyse_page(n_page):
-
+    print(n_page,'- ', end='')
     text_of_current_page = extract_page(n_page)
     list_of_dictionaries = []
     parser = etree.HTMLParser()
@@ -60,7 +62,6 @@ def analyse_page(n_page):
     n_films = len(films)
     if not n_films:
         return None
-
     for film in films:
         titolo = film.xpath('h2/a')[0].text
         registi = film.xpath('div/b/a/text()')
@@ -68,8 +69,8 @@ def analyse_page(n_page):
         dictionary = {'year': attori_e_genere[-1],
                       'title': titolo,
                       'genre': attori_e_genere[-2],
-                      'directors': registi,
-                      'actors': attori_e_genere[:-2]
+                      'directors': ', '.join(registi),
+                      'actors': ', '.join(attori_e_genere[:-2])
                       }
         list_of_dictionaries.append(dictionary)
     return list_of_dictionaries
@@ -107,5 +108,11 @@ if __name__ == '__main__':
     for year in years:
         indirizzo = page_address_parameters()
         lista_di_films = analyse_year()
-        write_year_on_csv(lista_di_films)
+        try:
+            write_year_on_csv(lista_di_films)
+        except:
+            print('writing error for year %d' %year)
+            print('Movies extracted from %d to %d' % (y_1, year-1))
+            print('Program terminated')
+            exit(0)
     print('Movies extracted from %d to %d' % (y_1, y_2-1))
