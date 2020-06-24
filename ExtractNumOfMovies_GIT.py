@@ -1,7 +1,3 @@
-# TODO: RISCRIVERE TUTTO UTILIZZANDO "ITER"
-# TODO: RISOLVERE IL PROBLEMA DEI REGISTI NULLI OPPURE MAGGIORI DI UNO
-# TODO: PROCEDURA PER LA RICERCA DI TUTTI I FILM ITALIANI IN UN ANNO SPECIFICO (1960 IN QUESTO ESEMPIO)
-# TODO: MODIFICARE LA RICERCA SEQUENZIALMENTE. IL REGISTA POTREBBE NON ESSERCI
 from lxml import html
 import csv
 import time
@@ -84,12 +80,7 @@ if __name__ == '__main__':
             all_DIRECTORS_in_page = tree.xpath('//b//a[@href]/text()')
             actors_and_genres = tree.xpath('//div[contains(text(),"Un film di")]/a[@href]/text()')
             attori = []
-            """
-            ORA CONTA I FILM TROVATI E QUANTI NE RIMANGONO
-            n_films = NUMERO DEI FILM TROVATI NELLA PAGINA
-            n_results_in_current_year = NUMERO DEI FILM RIMANENTI
-            CONTROLLA QUINDI A CHE PUNTO SIAMO
-            """
+
             n_films = len(all_TITLES_in_page)
             n_results_in_current_year -= n_films
             print("\nPage: %d -- Number of movies: %d -- Movies left within year %d: %d" % (page_number, n_films, current_year, n_results_in_current_year))
